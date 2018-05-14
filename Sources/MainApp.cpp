@@ -1,5 +1,3 @@
 #include "../Headers/MainApp.h"
 
-void fun()
-{
-}
+MainApp::~MainApp() {}

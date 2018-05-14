@@ -7,13 +7,14 @@
 #include <cstring>
 #include <vector>
 #include <sstream>
+#include <Windows.h>
 
-#define DISALLOW_DEFAULT_CONSTUCTORS(Class)   \
-    Class() = delete;                         \
-    Class(const Class &) = delete;            \
-    Class &operator=(const Class &) = delete; \
-    Class(Class &&) = delete;                 \
-    Class &operator=(Class &&) = delete
+#define DISABLE_DEFAULT_CONSTUCTORS(className)        \
+    className() = delete;                             \
+    className(const className &) = delete;            \
+    className &operator=(const className &) = delete; \
+    className(className &&) = delete;                 \
+    className &operator=(className &&) = delete
 
 enum operations_t
 {

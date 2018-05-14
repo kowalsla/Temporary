@@ -3,6 +3,14 @@
 
 #include "Common.h"
 
-void fun();
+class MainApp
+{
+private:
+  DISABLE_DEFAULT_CONSTUCTORS(MainApp);
+
+public:
+  ~MainApp();
+};
+
 
 #endif //MAINAPP_H

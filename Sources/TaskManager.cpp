@@ -29,7 +29,6 @@ errorCode_t TaskManager::extractTask(std::string line)
         ++iter;
     }
     param_count = --iter;
-    std::cout << param_count << " <<<\n";
     return executeTask();
 }
 
@@ -251,15 +250,22 @@ errorCode_t TaskManager::computeDISTANCE_AXIS()
 {
     std::cout << "computeDISTANCE_AXIS \n";
     errorCode_t retFlag = NO_ERR;
-    if (param_count != 1)
+    if (param_count != 4)
     {
         retFlag = WRONG_AMOUNT_PARAM;
     }
-    else if (parameters[0] < 0)
+    else
     {
-        retFlag = INVALID_PARAM;
+        for (int i = 0; i < 4; ++i)
+        {
+            if (parameters[i] < 0)
+            {
+                retFlag = INVALID_PARAM;
+                break;
+            }
+        }
     }
-    else if (NO_ERR == retFlag)
+    if (NO_ERR == retFlag)
     {
 
         //do smth
