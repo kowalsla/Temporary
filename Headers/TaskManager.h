@@ -22,6 +22,7 @@ class TaskManager
     TaskManager(FileManager &fileManagerObject);
     errorCode_t extractTask(std::string line);
     errorCode_t executeTask();
+
     void computeSUM();            //this function should not return any error, unless completely corrupted arguments are used
     void computeMULTIPLICATION(); //this function should not return any error, unless completely corrupted arguments are used
     errorCode_t computeXOR();

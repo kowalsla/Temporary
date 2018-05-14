@@ -28,6 +28,12 @@ errorCode_t FileManager::readFile()
     }
     return retFlag;
 }
+
+errorCode_t FileManager::saveToFile()
+{
+    return NO_ERR;
+}
+
 std::vector<std::string> FileManager::getTasksVector()
 {
     return tasksVector;

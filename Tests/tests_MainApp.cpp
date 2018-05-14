@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     TaskManager tmObject(fmObject);
     vector<string> tasks = fmObject.getTasksVector();
 
-    for (int i = 0; i < tasks.size(); ++i)
+    for (unsigned int i = 0; i < tasks.size(); ++i)
     {
         tmObject.extractTask(tasks[i]);
     }

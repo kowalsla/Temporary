@@ -1,5 +1,5 @@
-CXXFLAGS=-g -std=c++11
-__CXXFLAGS=-g -std=c++11 -Wall -pedantic
+__CXXFLAGS=-g -std=c++11
+CXXFLAGS=-g -std=c++11 -Wall -pedantic
 CC=g++
 SRC=./Sources
 all: build

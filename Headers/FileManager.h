@@ -13,7 +13,7 @@ private:
   FileManager &operator=(FileManager &&) = delete;      //disable default move assignment operator
 
   std::string inputFile;
-  std::vector<std::string> tasksVector; // get lines test
+  std::vector<std::string> tasksVector; // this vector is used to keep lines from file, which are later processed by TaskManager
 
 public:
   FileManager(const std::string file);

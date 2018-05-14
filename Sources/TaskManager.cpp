@@ -30,7 +30,7 @@ errorCode_t TaskManager::extractTask(std::string line)
     }
     param_count = --iter;
     std::cout << param_count << " <<<\n";
-    executeTask();
+    return executeTask();
 }
 
 errorCode_t TaskManager::executeTask()
