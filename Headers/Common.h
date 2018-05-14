@@ -8,6 +8,7 @@
 #include <vector>
 #include <sstream>
 #include <Windows.h>
+#include <cmath>
 
 #define DISABLE_DEFAULT_CONSTUCTORS(className)        \
     className() = delete;                             \
@@ -26,7 +27,7 @@ enum operations_t
     FACTORIAL,                     //1 param
     GCD,                           //the greatest common divisor
     FIBONACCI,                     //1 param
-    FIRST_PRIME_NUMBER,            //1 param, find first prime number
+    NTH_PRIME_NUMBER,              //1 param, find first prime number
     HIGHEST_PRIME_NUMBER_LT_PARAM, //the highest pm lower than given parameter
     DISTANCE_AXIS,                 //distance between two points on coordinate axis, 4 param in (x1, y1, x2, y2)
     COUNT_BINARY_ONES,             //count ones in binary representation of given parameter
