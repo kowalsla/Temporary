@@ -12,7 +12,6 @@ errorCode_t FileManager::readFile()
     bool wasFileOpenedFlag = false; // flag used to check if file opened correctly
     std::string line;
     std::ifstream newFile(inputFile);
-    std::cout << "check: (fileManager::readFile()): inputFile: " << inputFile << "<<\n";
     if (newFile.is_open())
     {
         wasFileOpenedFlag = true;

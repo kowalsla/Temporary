@@ -1,10 +1,24 @@
-__CXXFLAGS=-g -std=c++11
-CXXFLAGS=-g -std=c++11 -Wall -pedantic
+CXXFLAGS=-g -std=c++11 -Wall -pedantic -c
 CC=g++
 SRC=./Sources
+INC=./Headers
+TESTS=./Tests
+
 all: build
 
-build: MainApp
+build: TaskManager.o FileManager.o MainApp.o
+	mkdir -p Output
+	$(CC) TaskManager.o FileManager.o tests_MainApp.o -o ./Output/exec.exe
 
-MainApp:
-	$(CC) $(CXXFLAGS) ./Tests/tests_MainApp.cpp $(SRC)/FileManager.cpp $(SRC)/TaskManager.cpp $(SRC)/MainApp.cpp -o exec
+TaskManager.o: 
+	$(CC) $(CXXFLAGS) $(SRC)/TaskManager.cpp
+
+FileManager.o:
+	$(CC) $(CXXFLAGS) $(SRC)/FileManager.cpp
+
+MainApp.o:
+	$(CC) $(CXXFLAGS) $(TESTS)/tests_MainApp.cpp
+
+clean:
+	rm *.o
+	rm -r ./Output
