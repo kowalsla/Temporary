@@ -23,20 +23,20 @@ int main(int argc, char *argv[])
     QueryPerformanceFrequency(&frequency);
 
     LARGE_INTEGER start;
-    QueryPerformanceCounter(&start);
-    
+        LARGE_INTEGER end;
+    double interval;
     for (unsigned int i = 0; i < tasks.size(); ++i)
     {
-
+        QueryPerformanceCounter(&start);
         tmObject.extractTask(tasks[i]);
+        QueryPerformanceCounter(&end);
+        interval = static_cast<double>(end.QuadPart- start.QuadPart) / (frequency.QuadPart/1000.0); // in ms
+        std::cout << "Time: " << interval << "ms" << endl;
     }
 
-    LARGE_INTEGER end;
-    QueryPerformanceCounter(&end);
+
 
     // for microseconds use 1000000.0
-    double interval = static_cast<double>(end.QuadPart- start.QuadPart) / 
-                      frequency.QuadPart; // in seconds
-    std::cout << interval;
+
     return 0;
 }

@@ -100,7 +100,7 @@ void TaskManager::computeMULTIPLICATION()
             product *= parameters[i];
         }
     }
-    std::cout << "pc" << param_count << " Product = " << product << std::endl;
+    std::cout << " Product = " << product << std::endl;
     parameters.clear();
 }
 errorCode_t TaskManager::computeXOR()
