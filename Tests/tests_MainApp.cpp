@@ -14,8 +14,15 @@ int main(int argc, char *argv[])
         cout << "Wrong amount of parameters. Example command: './exec input.txt output.txt' " << endl;
         return -1;
     }
-    FileManager obj(argv[1]);
-    cout << argv[1];
-    obj.readFile();
+    FileManager fmObject(argv[1]);
+
+    TaskManager tmObject(fmObject);
+    vector<string> tasks = fmObject.getTasksVector();
+
+    for (int i = 0; i < tasks.size(); ++i)
+    {
+        tmObject.extractTask(tasks[i]);
+    }
+
     return 0;
 }

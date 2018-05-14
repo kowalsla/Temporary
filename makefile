@@ -7,4 +7,4 @@ all: build
 build: MainApp
 
 MainApp:
-	$(CC) $(CXXFLAGS) ./Tests/tests_MainApp.cpp $(SRC)/FileManager.cpp $(SRC)/MainApp.cpp -o exec
+	$(CC) $(CXXFLAGS) ./Tests/tests_MainApp.cpp $(SRC)/FileManager.cpp $(SRC)/TaskManager.cpp $(SRC)/MainApp.cpp -o exec
