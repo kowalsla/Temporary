@@ -1,3 +1,5 @@
 #include "../Headers/MainApp.h"
 
-MainApp::~MainApp() {}
+MainApp::~MainApp()
+{
+}

@@ -6,6 +6,8 @@ TESTS=./Tests
 
 all: build
 
+rebuild: clean build
+
 build: TaskManager.o FileManager.o MainApp.o
 	mkdir -p Output
 	$(CC) TaskManager.o FileManager.o tests_MainApp.o -o ./Output/exec.exe

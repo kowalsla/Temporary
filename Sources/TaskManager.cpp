@@ -6,6 +6,10 @@ TaskManager::TaskManager(FileManager &fileManagerObject) : fileManagerObject(fil
 }
 
 TaskManager::~TaskManager() {}
+int TaskManager::getResult()
+{
+    return result;
+}
 
 errorCode_t TaskManager::extractTask(std::string line)
 {
@@ -57,8 +61,8 @@ errorCode_t TaskManager::executeTask()
         break;
     case GCD:
         retFlag = computeGCD();
-    case FIRST_PRIME_NUMBER:
-        retFlag = computeFIRST_PRIME_NUMBER();
+    case NTH_PRIME_NUMBER:
+        retFlag = computeNTH_PRIME_NUMBER();
         break;
     case HIGHEST_PRIME_NUMBER_LT_PARAM:
         retFlag = computeHIGHEST_PRIME_NUMBER_LT_PARAM();
@@ -86,7 +90,7 @@ void TaskManager::computeSUM()
     {
         sum += parameters[i];
     }
-    std::cout << " SUM = " << sum << std::endl;
+    result = sum;
     parameters.clear();
 }
 void TaskManager::computeMULTIPLICATION()
@@ -100,7 +104,7 @@ void TaskManager::computeMULTIPLICATION()
             product *= parameters[i];
         }
     }
-    std::cout << " Product = " << product << std::endl;
+    result = product;
     parameters.clear();
 }
 errorCode_t TaskManager::computeXOR()
@@ -116,10 +120,8 @@ errorCode_t TaskManager::computeXOR()
     }
     if (NO_ERR == retFlag)
     {
-
-        //do smth
+        result = int(parameters[0] ^ parameters[1]);
     }
-    std::cout << "computeXOR \n";
     parameters.clear();
     return retFlag;
 }
@@ -137,18 +139,23 @@ errorCode_t TaskManager::computePOWER()
     }
     else if (NO_ERR == retFlag)
     {
-
-        //do smth
+        result = 1;
+        for (;;)
+        {
+            if (parameters[1] & 1)
+                result *= parameters[0];
+            parameters[1] >>= 1;
+            if (!parameters[1])
+                break;
+            parameters[0] *= parameters[0];
+        }
     }
-    std::cout << "computePOWER \n";
     parameters.clear();
     return retFlag;
 }
 
 errorCode_t TaskManager::computeFACTORIAL()
 {
-
-    std::cout << "computeFACTORIAL \n";
     errorCode_t retFlag = NO_ERR;
     if (param_count != 1)
     {
@@ -160,8 +167,11 @@ errorCode_t TaskManager::computeFACTORIAL()
     }
     else if (NO_ERR == retFlag)
     {
-
-        //do smth
+        result = 1;
+        for (int i = 1; i <= parameters[0]; ++i)
+        {
+            result *= i;
+        }
     }
     parameters.clear();
     return retFlag;
@@ -169,7 +179,6 @@ errorCode_t TaskManager::computeFACTORIAL()
 
 errorCode_t TaskManager::computeFIBONACCI()
 {
-    std::cout << "computeFIBONACCI \n";
     errorCode_t retFlag = NO_ERR;
     if (param_count != 1)
     {
@@ -181,7 +190,6 @@ errorCode_t TaskManager::computeFIBONACCI()
     }
     else if (NO_ERR == retFlag)
     {
-
         //do smth
     }
     parameters.clear();
@@ -202,15 +210,14 @@ errorCode_t TaskManager::computeGCD()
     }
     else if (NO_ERR == retFlag)
     {
-
         //do smth
     }
     parameters.clear();
     return retFlag;
 }
-errorCode_t TaskManager::computeFIRST_PRIME_NUMBER()
+errorCode_t TaskManager::computeNTH_PRIME_NUMBER()
 {
-    std::cout << "computeFIRST_PRIME_NUMBER \n";
+    std::cout << "computeNTH_PRIME_NUMBER \n";
     errorCode_t retFlag = NO_ERR;
     if (param_count != 1)
     {
@@ -222,8 +229,11 @@ errorCode_t TaskManager::computeFIRST_PRIME_NUMBER()
     }
     else if (NO_ERR == retFlag)
     {
-
-        //do smth
+        if (parameters[0] == 1)
+        {
+            result = 2;
+        }
+        //todo
     }
     parameters.clear();
     return retFlag;
@@ -239,7 +249,6 @@ errorCode_t TaskManager::computeHIGHEST_PRIME_NUMBER_LT_PARAM()
     }
     else if (NO_ERR == retFlag)
     {
-
         //do smth
     }
     parameters.clear();
@@ -248,7 +257,6 @@ errorCode_t TaskManager::computeHIGHEST_PRIME_NUMBER_LT_PARAM()
 
 errorCode_t TaskManager::computeDISTANCE_AXIS()
 {
-    std::cout << "computeDISTANCE_AXIS \n";
     errorCode_t retFlag = NO_ERR;
     if (param_count != 4)
     {
@@ -267,8 +275,7 @@ errorCode_t TaskManager::computeDISTANCE_AXIS()
     }
     if (NO_ERR == retFlag)
     {
-
-        //do smth
+        result = abs((parameters[0] + parameters[1]) - (parameters[2] + parameters[3]));
     }
     parameters.clear();
     return retFlag;
@@ -276,7 +283,6 @@ errorCode_t TaskManager::computeDISTANCE_AXIS()
 
 errorCode_t TaskManager::computeCOUNT_BINARY_ONES()
 {
-    std::cout << "computeCOUNT_BINARY_ONES \n";
     errorCode_t retFlag = NO_ERR;
     if (param_count != 1)
     {
@@ -288,8 +294,16 @@ errorCode_t TaskManager::computeCOUNT_BINARY_ONES()
     }
     else if (NO_ERR == retFlag)
     {
-
-        //do smth
+        int count = 0;
+        parameters[0];
+        for (unsigned int i = 0; i < sizeof(int) * 8; ++i)
+        {
+            if ((parameters[0] >> i) & 1)
+            {
+                ++count;
+            }
+        }
+        result = count;
     }
     parameters.clear();
     return retFlag;
@@ -309,8 +323,7 @@ errorCode_t TaskManager::computeCHECKSUM()
     }
     else if (NO_ERR == retFlag)
     {
-
-        //do smth
+        //todo
     }
     parameters.clear();
     return retFlag;
