@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
         cout << "Wrong amount of parameters. Example command: './exec input.txt output.txt' " << endl;
         return -1;
     }
-    FileManager fmObject(argv[1]);
+    FileManager fmObject(argv[1], argv[2]);
 
     TaskManager tmObject(fmObject);
     vector<string> tasks = fmObject.getTasksVector();
@@ -37,6 +37,7 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
             QueryPerformanceCounter(&end_fun);
             interval = static_cast<double>(end_fun.QuadPart - start_fun.QuadPart) / (frequency.QuadPart / 1000.0); // in ms
             cout << "==>" << interval << endl;
+            fmObject.saveToFile("test");
         }
         else
         {

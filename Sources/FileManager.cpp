@@ -1,12 +1,11 @@
 #include "../Headers/FileManager.h"
 FileManager::~FileManager() {}
 
-FileManager::FileManager(std::string fileName)
+FileManager::FileManager(const std::string &inputFilePath, const std::string &outputFilePath) : inputFile(inputFilePath), outputFile(outputFilePath)
 {
-    inputFile = fileName;
 }
 
-errorCode_t FileManager::readFile()
+errorCode_t FileManager::readFromFile()
 {
     errorCode_t retFlag = NO_ERR;
     bool wasFileOpenedFlag = false; // flag used to check if file opened correctly
@@ -28,9 +27,23 @@ errorCode_t FileManager::readFile()
     return retFlag;
 }
 
-errorCode_t FileManager::saveToFile()
+errorCode_t FileManager::saveToFile(const std::string &lineToSave)
 {
-    return NO_ERR;
+    errorCode_t retFlag = NO_ERR;
+    bool wasFileOpenedFlag = false;
+    std::ofstream newFile;
+    newFile.open(outputFile, std::ios_base::app);
+    if (newFile.is_open())
+    {
+        wasFileOpenedFlag = true;
+        newFile << lineToSave << "\n";
+    }
+    newFile.close();
+    if (false == wasFileOpenedFlag)
+    {
+        retFlag = FILE_READ_ERR;
+    }
+    return retFlag;
 }
 
 std::vector<std::string> FileManager::getTasksVector()
