@@ -1,8 +1,8 @@
 #include "../Headers/TaskManager.h"
 
-TaskManager::TaskManager(FileManager &fileManagerObject) : fileManagerObject(fileManagerObject), taskID(START), parameters(0), param_count(0)
+TaskManager::TaskManager(FileManager &fileManagerObject) : fileManagerObject(fileManagerObject), taskID(START), parameters(0), param_count(0), result(0)
 {
-    fileManagerObject.readFile();
+    fileManagerObject.readFromFile();
 }
 
 TaskManager::~TaskManager() {}
@@ -11,7 +11,7 @@ int TaskManager::getResult()
     return result;
 }
 
-errorCode_t TaskManager::extractTask(std::string line)
+errorCode_t TaskManager::extractTask(const std::string &line)
 {
     std::stringstream stream(line);
     int iter = 0;
@@ -61,6 +61,7 @@ errorCode_t TaskManager::executeTask()
         break;
     case GCD:
         retFlag = computeGCD();
+        break;
     case NTH_PRIME_NUMBER:
         retFlag = computeNTH_PRIME_NUMBER();
         break;
@@ -93,6 +94,7 @@ void TaskManager::computeSUM()
     result = sum;
     parameters.clear();
 }
+
 void TaskManager::computeMULTIPLICATION()
 {
     int product = 0;
@@ -107,6 +109,7 @@ void TaskManager::computeMULTIPLICATION()
     result = product;
     parameters.clear();
 }
+
 errorCode_t TaskManager::computeXOR()
 {
     errorCode_t retFlag = NO_ERR;
@@ -195,26 +198,32 @@ errorCode_t TaskManager::computeFIBONACCI()
     parameters.clear();
     return retFlag;
 }
+
 errorCode_t TaskManager::computeGCD()
 {
-    std::cout << "computeGCD\n";
     errorCode_t retFlag = NO_ERR;
     if (param_count < 2 || param_count > 4)
     {
-        std::cout << "ERRR\n";
         retFlag = WRONG_AMOUNT_PARAM;
     }
-    else if ((parameters[0] < 0) || (parameters[1] < 0) || (parameters[2] < 0))
+    else
     {
-        retFlag = INVALID_PARAM;
+        for (int i = 0; i < param_count; ++i)
+        {
+            if (parameters[i] < 0)
+            {
+                retFlag = INVALID_PARAM;
+            }
+        }
     }
-    else if (NO_ERR == retFlag)
+    if (NO_ERR == retFlag)
     {
         //do smth
     }
     parameters.clear();
     return retFlag;
 }
+
 errorCode_t TaskManager::computeNTH_PRIME_NUMBER()
 {
     std::cout << "computeNTH_PRIME_NUMBER \n";

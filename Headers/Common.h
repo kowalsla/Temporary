@@ -25,8 +25,8 @@ enum operations_t
     XOR,                           //2 parameters
     POWER,                         //2 param[in], param1 ^ param2
     FACTORIAL,                     //1 param
-    GCD,                           //the greatest common divisor
     FIBONACCI,                     //1 param
+    GCD,                           //the greatest common divisor
     NTH_PRIME_NUMBER,              //1 param, find first prime number
     HIGHEST_PRIME_NUMBER_LT_PARAM, //the highest pm lower than given parameter
     DISTANCE_AXIS,                 //distance between two points on coordinate axis, 4 param in (x1, y1, x2, y2)

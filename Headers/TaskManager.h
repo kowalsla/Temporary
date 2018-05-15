@@ -6,10 +6,21 @@
 class TaskManager
 {
 public:
-  TaskManager(FileManager &fileManagerObject);
-  errorCode_t extractTask(std::string line);
-  errorCode_t executeTask();
+  explicit TaskManager(FileManager &fileManagerObject);
+  errorCode_t extractTask(const std::string &line);
   int getResult();
+  ~TaskManager();
+
+private:
+  DISABLE_DEFAULT_CONSTUCTORS(TaskManager);
+
+  FileManager &fileManagerObject; //object of FileManager class, used to get tasks
+  operations_t taskID;            //ID of a task
+  std::vector<int> parameters;    //vector of parameters
+  int param_count;                //amount of parameters
+  int result;                     // result of operation
+
+  errorCode_t executeTask(); // function executes tasks, used by extractTask(const string&) function
 
   void computeSUM();            //this function should not return any error, unless completely corrupted arguments are used
   void computeMULTIPLICATION(); //this function should not return any error, unless completely corrupted arguments are used
@@ -23,17 +34,6 @@ public:
   errorCode_t computeDISTANCE_AXIS();
   errorCode_t computeCOUNT_BINARY_ONES();
   errorCode_t computeCHECKSUM();
-  ~TaskManager();
-
-private:
-  DISABLE_DEFAULT_CONSTUCTORS(TaskManager);
-
-  FileManager &fileManagerObject; //object of FileManager class, used to get tasks
-  operations_t taskID;            //ID of a task
-  std::vector<int> parameters;    //vector of parameters
-
-  int param_count; //amount of parameters
-  int result;      // result of operation
 };
 
 #endif //TASK_MANAGER_H
