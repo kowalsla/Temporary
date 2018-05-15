@@ -41,7 +41,7 @@ errorCode_t FileManager::saveToFile(const std::string &lineToSave)
     newFile.close();
     if (false == wasFileOpenedFlag)
     {
-        retFlag = FILE_READ_ERR;
+        retFlag = FILE_SAVE_ERR;
     }
     return retFlag;
 }
