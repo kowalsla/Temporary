@@ -1,7 +1,7 @@
 #include "../Headers/MainApp.h"
 #include "../Headers/FileManager.h"
 #include "../Headers/TaskManager.h"
-
+#include "../Headers/AllTasks.h"
 using namespace std;
 /**
  *  param[in] argc should be eq to 3 - name of program, input.txt, output.txt 
@@ -9,13 +9,14 @@ using namespace std;
 */
 int main(int argc, char *argv[]) // temporary functionality here, it should be moved to MainApp.cpp soon
 {
-    LARGE_INTEGER start, end;
-    QueryPerformanceCounter(&start);
     if (argc != 3)
     {
         cout << "Wrong amount of parameters. Example command: './exec input.txt output.txt' " << endl;
         return -1;
     }
+    LARGE_INTEGER start, end;
+    QueryPerformanceCounter(&start);
+
     FileManager fmObject(argv[1], argv[2]);
 
     TaskManager tmObject(fmObject);
@@ -24,10 +25,10 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
     LARGE_INTEGER frequency;
     QueryPerformanceFrequency(&frequency);
 
-    LARGE_INTEGER start_fun;
-    LARGE_INTEGER end_fun;
+    //LARGE_INTEGER start_fun;
+    // LARGE_INTEGER end_fun;
     double interval;
-    for (unsigned int i = 0; i < tasks.size(); ++i)
+    /*   for (unsigned int i = 0; i < tasks.size(); ++i)
     {
         QueryPerformanceCounter(&start_fun);
         if (NO_ERR == tmObject.extractTask(tasks[i]))
@@ -43,6 +44,13 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
         {
             cout << "Error at line " << i + 1 << " in txt file with input data" << endl;
         }
+    }*/
+
+    vector<singleTask> tasksObjects;
+    for (unsigned int i = 0; i < tasks.size(); ++i)
+    {
+        tmObject.saveToStruct(tasks[i]);
+        tasksObjects.push_back(tmObject.getSingleTaskStruct());
     }
 
     QueryPerformanceCounter(&end);
