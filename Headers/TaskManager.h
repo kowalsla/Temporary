@@ -8,6 +8,7 @@ struct singleTask // struct containing everything that is needed by task
   operations_t taskID;
   std::vector<int> parameters;
   int paramCount;
+  ~singleTask(){}
 };
 
 class TaskManager

@@ -1,6 +1,6 @@
 #include "../Headers/AllTasks.h"
 
-inline void checkParam(int paramCount, int expectedParamCount, errorCode_t &flag)
+inline void AllTasks::checkParam(int paramCount, int expectedParamCount, errorCode_t &flag)
 {
     if (paramCount != expectedParamCount)
     {
@@ -11,10 +11,10 @@ inline void checkParam(int paramCount, int expectedParamCount, errorCode_t &flag
         flag = NO_ERR;
     }
 }
-AllTasks::AllTasks(singleTask &incommingTask) : parameters(incommingTask.parameters), paramCount(incommingTask.paramCount), taskID(incommingTask.taskID)
+AllTasks::AllTasks(singleTask incommingTask) : parameters(incommingTask.parameters), paramCount(incommingTask.paramCount), taskID(incommingTask.taskID)
 {
 }
-errorCode_t AllTasks::executeTask(operations_t taskID, int &inputVal)
+errorCode_t AllTasks::executeTask(int &inputVal)
 {
     errorCode_t retFlag = NO_ERR;
     switch (taskID)

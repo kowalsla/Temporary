@@ -1,10 +1,17 @@
 #include "../Headers/FileManager.h"
 FileManager::~FileManager() {}
 
-FileManager::FileManager(const std::string &inputFilePath, const std::string &outputFilePath) : inputFile(inputFilePath), outputFile(outputFilePath)
+FileManager::FileManager(const std::string &inputFilePath, const std::string &outputFilePath) : inputFile(inputFilePath), outputFile(outputFilePath), configFile("")
+{
+}
+FileManager::FileManager(const std::string &configFilePath) : inputFile(""), outputFile(""), configFile(configFilePath)
 {
 }
 
+errorCode_t FileManager::readConfig()
+{
+
+}
 errorCode_t FileManager::readFromFile()
 {
     errorCode_t retFlag = NO_ERR;
