@@ -10,7 +10,7 @@ FileManager::FileManager(const std::string &configFilePath) : inputFile(""), out
 
 errorCode_t FileManager::readConfig()
 {
-
+    return NO_ERR;
 }
 errorCode_t FileManager::readFromFile()
 {

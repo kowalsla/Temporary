@@ -217,7 +217,10 @@ errorCode_t AllTasks::computeHIGHEST_PRIME_NUMBER_LT_PARAM(int &inputVal)
     checkParam(paramCount, 1, retFlag);
     if (NO_ERR == retFlag)
     {
-        //do smth
+        int tempResult;
+        for (unsigned int i = 0; i < parameters[0]; ++i)
+        {
+        }
     }
     return retFlag;
 }
@@ -225,21 +228,11 @@ errorCode_t AllTasks::computeHIGHEST_PRIME_NUMBER_LT_PARAM(int &inputVal)
 errorCode_t AllTasks::computeDISTANCE_AXIS(int &inputVal)
 {
     errorCode_t retFlag = NO_ERR;
-    checkParam(paramCount, 2, retFlag);
+    checkParam(paramCount, 4, retFlag);
+
     if (NO_ERR == retFlag)
     {
-        for (int i = 0; i < 4; ++i)
-        {
-            if (parameters[i] < 0)
-            {
-                retFlag = INVALID_PARAM;
-                break;
-            }
-        }
-    }
-    if (NO_ERR == retFlag)
-    {
-        inputVal = abs((parameters[0] + parameters[1]) - (parameters[2] + parameters[3]));
+        inputVal = abs(parameters[0] - parameters[2]) + abs(parameters[1] - parameters[3]);
     }
     return retFlag;
 }

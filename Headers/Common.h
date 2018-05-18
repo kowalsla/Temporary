@@ -1,14 +1,13 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include <iostream>
-#include <thread>
-#include <fstream>
-#include <cstring>
-#include <vector>
-#include <sstream>
-#include <Windows.h>
-#include <cmath>
+#include <iostream>  //basic in out library
+#include <fstream>   //file stream library
+#include <cstring>   //string operations
+#include <vector>    //stl vector
+#include <sstream>   //operations on 
+#include <Windows.h> //windows library, QueryPerformanceCounter used from this lib
+#include <cmath>     //math library
 
 #define DISABLE_DEFAULT_CONSTUCTORS(className)        \
     className() = delete;                             \
