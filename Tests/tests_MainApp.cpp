@@ -1,14 +1,18 @@
 #include "../Headers/MainApp.h"
 #include "../Headers/AllTasks.h"
-#define ADDITIONAL_THREAD_NO 1
 using namespace std;
 /**
  *  param[in] argc should be eq to 3 - name of program, input.txt, output.txt 
  *  argv[] should be : argv[0] == "./name", argv[1] == "input.txt", argv[2] == "output.txt"
 */
-
+void callFromThread()
+{
+    cout << "kek";
+}
 int main(int argc, char *argv[]) // temporary functionality here, it should be moved to MainApp.cpp soon
 {
+    thread t1(callFromThread);
+    t1.join();
     if (argc != 3)
     {
         cout << "Wrong amount of parameters. Example command: './exec input.txt output.txt' " << endl;
@@ -57,7 +61,7 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
         AllTasks newTask(allDataNeededToRunTask[i]);
         if (NO_ERR == newTask.executeTask(result))
         {
-            std::cout << "Line: " << i << " Result: " << result;
+            std::cout << "Line: " << i + 1 << " Result: " << result;
         }
         else
         {

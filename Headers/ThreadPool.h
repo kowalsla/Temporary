@@ -6,7 +6,7 @@
 class ThreadPool
 {
   public:
-    explicit ThreadPool(int noOfThreads);
+    explicit ThreadPool(const int &noOfThreads);
 
   private:
 };

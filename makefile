@@ -1,29 +1,30 @@
-CXXFLAGS=-g -std=c++11 -Wall -pedantic -c
+CXXFLAGS=-g -std=c++1y -Wall -pthread -c 
 CC=g++
 SRC=./Sources
 INC=./Headers
 TESTS=./Tests
+OBJ=./Output/Objects
 
 all: build
 
 rebuild: clean build
 
-build: TaskManager.o FileManager.o MainApp.o AllTasks.o
-	mkdir -p Output
-	$(CC) TaskManager.o FileManager.o tests_MainApp.o AllTasks.o -o ./Output/exec.exe 
-
+build: Output TaskManager.o FileManager.o MainApp.o AllTasks.o
+	$(CC) $(OBJ)/* -o ./Output/exec.exe 
+Output:
+	mkdir -p ./Output/Objects
 TaskManager.o: 
-	$(CC) $(CXXFLAGS) $(SRC)/TaskManager.cpp
+	$(CC) $(CXXFLAGS) $(SRC)/TaskManager.cpp -o $(OBJ)/TaskManager.o
 
 FileManager.o:
-	$(CC) $(CXXFLAGS) $(SRC)/FileManager.cpp
+	$(CC) $(CXXFLAGS) $(SRC)/FileManager.cpp -o $(OBJ)/FileManager.o
 
 MainApp.o:
-	$(CC) $(CXXFLAGS) $(TESTS)/tests_MainApp.cpp
+	$(CC) $(CXXFLAGS) $(TESTS)/tests_MainApp.cpp -o $(OBJ)/MainApp.o
 
 AllTasks.o:
-	$(CC) $(CXXFLAGS) $(SRC)/AllTasks.cpp
+	$(CC) $(CXXFLAGS) $(SRC)/AllTasks.cpp -o $(OBJ)/AllTasks.o
 
 clean:
-	rm *.o
+	rm -p *.o
 	rm -r ./Output

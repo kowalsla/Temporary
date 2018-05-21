@@ -4,10 +4,13 @@
 #include <iostream>  //basic in out library
 #include <fstream>   //file stream library
 #include <cstring>   //string operations
-#include <vector>    //stl vector
-#include <sstream>   //operations on 
+#include <vector>    //stl vector - std::vector
+#include <sstream>   //operations on
 #include <Windows.h> //windows library, QueryPerformanceCounter used from this lib
 #include <cmath>     //math library
+#include <thread>    // multithreading
+#include <limits>    // used to get max value of given type
+#include <cstddef>   //works with <limits>
 
 #define DISABLE_DEFAULT_CONSTUCTORS(className)        \
     className() = delete;                             \
@@ -37,9 +40,10 @@ enum errorCode_t
 {
     NO_ERR = 0,         //no error occured
     INVALID_PARAM,      //invalid parameter
+    INVALID_TASK_ID,    //there is no task with given ID
     WRONG_AMOUNT_PARAM, //wrong amount of parameters
     FILE_READ_ERR,      //error with opening file
-    FILE_SAVE_ERR
+    FILE_SAVE_ERR       // error with saving file
 };
 
 #endif //COMMON_H

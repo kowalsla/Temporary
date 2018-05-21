@@ -11,68 +11,68 @@ inline void AllTasks::checkParam(int paramCount, int expectedParamCount, errorCo
         flag = NO_ERR;
     }
 }
-AllTasks::AllTasks(singleTask incommingTask) : parameters(incommingTask.parameters), paramCount(incommingTask.paramCount), taskID(incommingTask.taskID)
+AllTasks::AllTasks(singleTask &incommingTask) : parameters(incommingTask.parameters), paramCount(incommingTask.paramCount), taskID(incommingTask.taskID)
 {
 }
-errorCode_t AllTasks::executeTask(int &inputVal)
+errorCode_t AllTasks::executeTask(int &retResult)
 {
-    errorCode_t retFlag = NO_ERR;
+    errorCode_t retError = NO_ERR;
     switch (taskID)
     {
     case SUM:
-        computeSUM(inputVal);
+        computeSUM(retResult);
         break;
     case MULTIPLICATION:
-        computeMULTIPLICATION(inputVal);
+        computeMULTIPLICATION(retResult);
         break;
     case XOR:
-        retFlag = computeXOR(inputVal);
+        retError = computeXOR(retResult);
         break;
     case POWER:
-        retFlag = computePOWER(inputVal);
+        retError = computePOWER(retResult);
         break;
     case FACTORIAL:
-        retFlag = computeFACTORIAL(inputVal);
+        retError = computeFACTORIAL(retResult);
         break;
     case FIBONACCI:
-        retFlag = computeFIBONACCI(inputVal);
+        retError = computeFIBONACCI(retResult);
         break;
     case GCD:
-        retFlag = computeGCD(inputVal);
+        retError = computeGCD(retResult);
         break;
     case NTH_PRIME_NUMBER:
-        retFlag = computeNTH_PRIME_NUMBER(inputVal);
+        retError = computeNTH_PRIME_NUMBER(retResult);
         break;
     case HIGHEST_PRIME_NUMBER_LT_PARAM:
-        retFlag = computeHIGHEST_PRIME_NUMBER_LT_PARAM(inputVal);
+        retError = computeHIGHEST_PRIME_NUMBER_LT_PARAM(retResult);
         break;
     case DISTANCE_AXIS:
-        retFlag = computeDISTANCE_AXIS(inputVal);
+        retError = computeDISTANCE_AXIS(retResult);
         break;
     case COUNT_BINARY_ONES:
-        retFlag = computeCOUNT_BINARY_ONES(inputVal);
+        retError = computeCOUNT_BINARY_ONES(retResult);
         break;
     case CHECKSUM:
-        retFlag = computeCHECKSUM(inputVal);
+        retError = computeCHECKSUM(retResult);
         break;
     default:
-        retFlag = INVALID_PARAM;
+        retError = INVALID_TASK_ID;
         break;
     }
-    return retFlag;
+    return retError;
 }
 
-void AllTasks::computeSUM(int &inputVal)
+void AllTasks::computeSUM(int &retResult)
 {
     int sum = 0;
     for (int i = 0; i < paramCount; ++i)
     {
         sum += parameters[i];
     }
-    inputVal = sum;
+    retResult = sum;
 }
 
-void AllTasks::computeMULTIPLICATION(int &inputVal)
+void AllTasks::computeMULTIPLICATION(int &retResult)
 {
     int product = 0;
     if (paramCount > 0)
@@ -83,42 +83,46 @@ void AllTasks::computeMULTIPLICATION(int &inputVal)
             product *= parameters[i];
         }
     }
-    inputVal = product;
+    retResult = product;
 }
 
-errorCode_t AllTasks::computeXOR(int &inputVal)
+errorCode_t AllTasks::computeXOR(int &retResult)
 {
-    errorCode_t retFlag = NO_ERR;
-    checkParam(paramCount, 2, retFlag);
-
-    if (((parameters[0] < 0) || (parameters[1]) < 0) && (NO_ERR == retFlag))
+    errorCode_t retError = NO_ERR;
+    checkParam(paramCount, 2, retError);
+    if (NO_ERR == retError)
     {
-        retFlag = INVALID_PARAM;
+        if ((parameters[0] < 0) || (parameters[1]) < 0)
+        {
+            retError = INVALID_PARAM;
+        }
     }
-    if (NO_ERR == retFlag)
+    if (NO_ERR == retError)
     {
-        inputVal = static_cast<int>(parameters[0] ^ parameters[1]);
+        retResult = static_cast<int>(parameters[0] ^ parameters[1]);
     }
-    return retFlag;
+    return retError;
 }
 
-errorCode_t AllTasks::computePOWER(int &inputVal)
+errorCode_t AllTasks::computePOWER(int &retResult)
 {
-    errorCode_t retFlag = NO_ERR;
-    checkParam(paramCount, 2, retFlag);
-
-    if (((parameters[0] < 0) || (parameters[1]) < 0) && (NO_ERR == retFlag))
+    errorCode_t retError = NO_ERR;
+    checkParam(paramCount, 2, retError);
+    if (NO_ERR == retError)
     {
-        retFlag = INVALID_PARAM;
+        if ((parameters[0] < 0) || (parameters[1]) < 0)
+        {
+            retError = INVALID_PARAM;
+        }
     }
-    else if (NO_ERR == retFlag)
+    if (NO_ERR == retError) //Exponentiation by squaring algorithm
     {
-        inputVal = 1;
+        retResult = 1;
         for (;;)
         {
             if (parameters[1] & 1)
             {
-                inputVal *= parameters[0];
+                retResult *= parameters[0];
             }
             parameters[1] >>= 1;
             if (!parameters[1])
@@ -128,51 +132,71 @@ errorCode_t AllTasks::computePOWER(int &inputVal)
             parameters[0] *= parameters[0];
         }
     }
-    return retFlag;
+    return retError;
 }
 
-errorCode_t AllTasks::computeFACTORIAL(int &inputVal)
+errorCode_t AllTasks::computeFACTORIAL(int &retResult)
 {
-    errorCode_t retFlag = NO_ERR;
-    checkParam(paramCount, 1, retFlag);
-
-    if ((parameters[0] < 0) && (NO_ERR == retFlag))
+    errorCode_t retError = NO_ERR;
+    checkParam(paramCount, 1, retError);
+    if (NO_ERR == retError)
     {
-        retFlag = INVALID_PARAM;
-    }
-    else if (NO_ERR == retFlag)
-    {
-        inputVal = 1;
-        for (int i = 1; i <= parameters[0]; ++i)
+        if (parameters[0] < 0)
         {
-            inputVal *= i;
+            retError = INVALID_PARAM;
         }
     }
-    return retFlag;
+    if (NO_ERR == retError)
+    {
+        retResult = 1;
+        for (int i = 1; i <= parameters[0]; ++i)
+        {
+            retResult *= i;
+        }
+    }
+    return retError;
 }
 
-errorCode_t AllTasks::computeFIBONACCI(int &inputVal)
+errorCode_t AllTasks::computeFIBONACCI(int &retResult)
 {
-    errorCode_t retFlag = NO_ERR;
-    checkParam(paramCount, 1, retFlag);
-
-    if (parameters[0] < 0 && (NO_ERR == retFlag))
+    errorCode_t retError = NO_ERR;
+    checkParam(paramCount, 1, retError);
+    if (NO_ERR == retError)
     {
-        retFlag = INVALID_PARAM;
+        if (parameters[0] < 0)
+        {
+            retError = INVALID_PARAM;
+        }
     }
-    else if (NO_ERR == retFlag)
+    if (NO_ERR == retError)
     {
-        //do smth
+        if (parameters[0] == 0)
+        {
+            retResult = 0;
+        }
+        else
+        {
+            int val0 = 0;
+            int val1 = 1;
+            int temp;
+            for (int i = 1; i < parameters[0]; ++i)
+            {
+                temp = val0;
+                val0 = val1;
+                val1 = temp + val1;
+            }
+            retResult = val1;
+        }
     }
-    return retFlag;
+    return retError;
 }
 
-errorCode_t AllTasks::computeGCD(int &inputVal)
+errorCode_t AllTasks::computeGCD(int &retResult)
 {
-    errorCode_t retFlag = NO_ERR;
+    errorCode_t retError = NO_ERR;
     if (paramCount < 2 || paramCount > 4)
     {
-        retFlag = WRONG_AMOUNT_PARAM;
+        retError = WRONG_AMOUNT_PARAM;
     }
     else
     {
@@ -180,72 +204,132 @@ errorCode_t AllTasks::computeGCD(int &inputVal)
         {
             if (parameters[i] < 0)
             {
-                retFlag = INVALID_PARAM;
+                retError = INVALID_PARAM;
             }
         }
     }
-    if (NO_ERR == retFlag)
+    if (NO_ERR == retError)
     {
-        //do smth
-    }
-    return retFlag;
-}
-
-errorCode_t AllTasks::computeNTH_PRIME_NUMBER(int &inputVal)
-{
-    errorCode_t retFlag = NO_ERR;
-    checkParam(paramCount, 1, retFlag);
-
-    if ((parameters[0] < 0) && (NO_ERR == retFlag))
-    {
-        retFlag = INVALID_PARAM;
-    }
-    if (NO_ERR == retFlag)
-    {
-        if (parameters[0] == 1)
+        retResult = 0;
+        bool isDivisor;
+        int minVal = parameters[0];
+        for (int i = 0; i < paramCount; ++i)
         {
-            inputVal = 2;
+            if (minVal > parameters[i])
+            {
+                minVal = parameters[i];
+            }
         }
-        //todo
-    }
-    return retFlag;
-}
-
-errorCode_t AllTasks::computeHIGHEST_PRIME_NUMBER_LT_PARAM(int &inputVal)
-{
-    errorCode_t retFlag = NO_ERR;
-    checkParam(paramCount, 1, retFlag);
-    if (NO_ERR == retFlag)
-    {
-        int tempResult;
-        for (unsigned int i = 0; i < parameters[0]; ++i)
+        for (int i = 1; i <= minVal; ++i)
         {
+            isDivisor = true;
+            for (int j = 0; j < paramCount; ++j)
+            {
+                if (parameters[j] % i != 0)
+                {
+                    isDivisor = false;
+                    break;
+                }
+            }
+            if (true == isDivisor)
+            {
+                retResult = i;
+            }
         }
     }
-    return retFlag;
+    return retError;
 }
 
-errorCode_t AllTasks::computeDISTANCE_AXIS(int &inputVal)
+errorCode_t AllTasks::computeNTH_PRIME_NUMBER(int &retResult)
 {
-    errorCode_t retFlag = NO_ERR;
-    checkParam(paramCount, 4, retFlag);
-
-    if (NO_ERR == retFlag)
+    errorCode_t retError = NO_ERR;
+    checkParam(paramCount, 1, retError);
+    if (NO_ERR == retError)
     {
-        inputVal = abs(parameters[0] - parameters[2]) + abs(parameters[1] - parameters[3]);
+        if (parameters[0] < 0)
+        {
+            retError = INVALID_PARAM;
+        }
     }
-    return retFlag;
+    if (NO_ERR == retError)
+    {
+        int count = 1;
+        {
+            if (parameters[0] == 1)
+            {
+                retResult = 2;
+            }
+            else
+            {
+                for (int i = 1; i < std::numeric_limits<int>::max(); i = i + 2)
+                {
+                    if (true == isPrime(i))
+                    {
+                        ++count;
+                    }
+                    if (count == parameters[0])
+                    {
+                        retResult = i;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return retError;
 }
 
-errorCode_t AllTasks::computeCOUNT_BINARY_ONES(int &inputVal)
+errorCode_t AllTasks::computeHIGHEST_PRIME_NUMBER_LT_PARAM(int &retResult)
 {
-    errorCode_t retFlag = NO_ERR;
-    checkParam(paramCount, 1, retFlag);
-    if (parameters[0] < 0 && (NO_ERR == retFlag))
+    errorCode_t retError = NO_ERR;
+    checkParam(paramCount, 1, retError);
+    if (NO_ERR == retError)
     {
-        retFlag = INVALID_PARAM;
+        if (parameters[0] <= 2)
+        {
+            retError = INVALID_PARAM;
+        }
+        else if (3 == parameters[0])
+        {
+            retResult = parameters[0];
+        }
+        else
+        {
+            int tempResult = 0;
+            for (int i = 3; i < parameters[0]; i = i + 2)
+            {
+                if (true == isPrime(i))
+                {
+                    tempResult = i;
+                }
+            }
+            retResult = tempResult;
+        }
     }
-    if (NO_ERR == retFlag)
+    return retError;
+}
+
+errorCode_t AllTasks::computeDISTANCE_AXIS(int &retResult)
+{
+    errorCode_t retError = NO_ERR;
+    checkParam(paramCount, 4, retError);
+
+    if (NO_ERR == retError)
+    {
+        retResult = abs(parameters[0] - parameters[2]) + abs(parameters[1] - parameters[3]);
+    }
+    return retError;
+}
+
+errorCode_t AllTasks::computeCOUNT_BINARY_ONES(int &retResult)
+{
+    errorCode_t retError = NO_ERR;
+    checkParam(paramCount, 1, retError);
+    if (parameters[0] < 0 && (NO_ERR == retError))
+    {
+        retError = INVALID_PARAM;
+    }
+    if (NO_ERR == retError)
     {
         int count = 0;
         parameters[0];
@@ -256,22 +340,46 @@ errorCode_t AllTasks::computeCOUNT_BINARY_ONES(int &inputVal)
                 ++count;
             }
         }
-        inputVal = count;
+        retResult = count;
     }
-    return retFlag;
+    return retError;
 }
 
-errorCode_t AllTasks::computeCHECKSUM(int &inputVal)
+errorCode_t AllTasks::computeCHECKSUM(int &retResult)
 {
-    errorCode_t retFlag = NO_ERR;
-    checkParam(paramCount, 1, retFlag);
-    if (parameters[0] < 0 && (NO_ERR == retFlag))
+    errorCode_t retError = NO_ERR;
+    checkParam(paramCount, 1, retError);
+    if (parameters[0] < 0 && (NO_ERR == retError))
     {
-        retFlag = INVALID_PARAM;
+        retError = INVALID_PARAM;
     }
-    if (NO_ERR == retFlag)
+    if (NO_ERR == retError)
     {
         //todo
     }
-    return retFlag;
+    return retError;
+}
+
+bool AllTasks::isPrime(int &val)
+{
+    int count = 0;
+    for (int i = 1; i <= val; ++i)
+    {
+        if (val % i == 0)
+        {
+            count++;
+        }
+        if (count > 2)
+        {
+            return false;
+        }
+    }
+    if (count == 1)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }

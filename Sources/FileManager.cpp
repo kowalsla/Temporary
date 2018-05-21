@@ -14,7 +14,7 @@ errorCode_t FileManager::readConfig()
 }
 errorCode_t FileManager::readFromFile()
 {
-    errorCode_t retFlag = NO_ERR;
+    errorCode_t retError = NO_ERR;
     bool wasFileOpenedFlag = false; // flag used to check if file opened correctly
     std::string line;
     std::ifstream newFile(inputFile);
@@ -29,14 +29,14 @@ errorCode_t FileManager::readFromFile()
     }
     if (false == wasFileOpenedFlag)
     {
-        retFlag = FILE_READ_ERR;
+        retError = FILE_READ_ERR;
     }
-    return retFlag;
+    return retError;
 }
 
 errorCode_t FileManager::saveToFile(const std::string &lineToSave)
 {
-    errorCode_t retFlag = NO_ERR;
+    errorCode_t retError = NO_ERR;
     bool wasFileOpenedFlag = false;
     std::ofstream newFile;
     newFile.open(outputFile, std::ios_base::app);
@@ -48,9 +48,9 @@ errorCode_t FileManager::saveToFile(const std::string &lineToSave)
     newFile.close();
     if (false == wasFileOpenedFlag)
     {
-        retFlag = FILE_SAVE_ERR;
+        retError = FILE_SAVE_ERR;
     }
-    return retFlag;
+    return retError;
 }
 
 std::vector<std::string> FileManager::getTasksVector()
