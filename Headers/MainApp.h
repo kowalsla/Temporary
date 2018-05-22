@@ -3,7 +3,7 @@
 
 #include "Common.h"
 
-class MainApp
+class MainApp       //TODO
 {
 private:
   DISABLE_DEFAULT_CONSTUCTORS(MainApp);
