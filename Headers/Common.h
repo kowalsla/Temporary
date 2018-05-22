@@ -12,6 +12,8 @@
 #include <limits>    // used to get max value of given type
 #include <cstddef>   //works with <limits>
 
+#define CONFIG_FILE_PATH "./Configuration/config.txt"
+
 #define DISABLE_DEFAULT_CONSTUCTORS(className)        \
     className() = delete;                             \
     className(const className &) = delete;            \
@@ -38,12 +40,13 @@ enum operations_t
 
 enum errorCode_t
 {
-    NO_ERR = 0,         //no error occured
-    INVALID_PARAM,      //invalid parameter
-    INVALID_TASK_ID,    //there is no task with given ID
-    WRONG_AMOUNT_PARAM, //wrong amount of parameters
-    FILE_READ_ERR,      //error with opening file
-    FILE_SAVE_ERR       // error with saving file
+    NO_ERR = 0,          //no error occured
+    INVALID_PARAM,       //invalid parameter
+    INVALID_TASK_ID,     //there is no task with given ID
+    WRONG_AMOUNT_PARAM,  //wrong amount of parameters
+    FILE_READ_ERR,       //error while opening file
+    FILE_SAVE_ERR,       //error while saving file
+    CONFIG_FILE_READ_ERR //error while opening config file
 };
 
 #endif //COMMON_H

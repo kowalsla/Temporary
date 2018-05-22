@@ -1,17 +1,46 @@
 #include "../Headers/FileManager.h"
 FileManager::~FileManager() {}
 
-FileManager::FileManager(const std::string &inputFilePath, const std::string &outputFilePath) : inputFile(inputFilePath), outputFile(outputFilePath), configFile("")
-{
-}
-FileManager::FileManager(const std::string &configFilePath) : inputFile(""), outputFile(""), configFile(configFilePath)
+FileManager::FileManager(const std::string &inputFilePath) : inputFile(inputFilePath), configFile(CONFIG_FILE_PATH)
 {
 }
 
-errorCode_t FileManager::readConfig()
+errorCode_t FileManager::readConfig(int &retThreadAmount)
 {
-    return NO_ERR;
+    errorCode_t retError = NO_ERR;
+    bool wasFileOpenedFlag = false; //flag used to check if file opened correctly
+    std::string line;
+    std::ifstream newFile(configFile);
+    int temp; //temporary value to store amount of threads extracted from file
+    if (newFile.is_open())
+    {
+        wasFileOpenedFlag = true;
+        for (int i = 1; i <= 4; ++i)
+        {
+            getline(newFile, line);
+        }
+        std::stringstream stream(line);
+        while (1)
+        {
+            stream >> temp;
+            if (!stream)
+            {
+                break;
+            }
+        }
+        newFile.close();
+    }
+    if (false == wasFileOpenedFlag)
+    {
+        retError = CONFIG_FILE_READ_ERR;
+    }
+    else
+    {
+        retThreadAmount = temp;
+    }
+    return retError;
 }
+
 errorCode_t FileManager::readFromFile()
 {
     errorCode_t retError = NO_ERR;
@@ -34,7 +63,7 @@ errorCode_t FileManager::readFromFile()
     return retError;
 }
 
-errorCode_t FileManager::saveToFile(const std::string &lineToSave)
+/*errorCode_t FileManager::saveToFile(const std::string &lineToSave)
 {
     errorCode_t retError = NO_ERR;
     bool wasFileOpenedFlag = false;
@@ -52,7 +81,7 @@ errorCode_t FileManager::saveToFile(const std::string &lineToSave)
     }
     return retError;
 }
-
+*/
 std::vector<std::string> FileManager::getTasksVector()
 {
     return tasksVector;

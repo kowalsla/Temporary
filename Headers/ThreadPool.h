@@ -3,12 +3,12 @@
 
 #include "Common.h"
 
-class ThreadPool
+class ThreadPool  //TODO
 {
-  public:
-    explicit ThreadPool(const int &noOfThreads);
+public:
+  explicit ThreadPool(const int &amountOfThreads);
 
-  private:
+private:
 };
 
 #endif //THREADPOOL_H

@@ -30,7 +30,7 @@ private:
   errorCode_t computeCOUNT_BINARY_ONES(int &retResult);
   errorCode_t computeCHECKSUM(int &retResult);
 
-  bool isPrime(int &val);
+  bool isPrimeNumber(int &val); //additional function which helps with computing prime numbers, used by computeNTH_PRIME_NUMBER and computeHIGHEST_PRIME_NUMBER_LT_PARAM
 };
 
 #endif //ALLTASKS_H

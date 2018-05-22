@@ -1,3 +1,3 @@
 #include "./Headers/ThreadPool.h"
 
-ThreadPool::ThreadPool(const int &noOfThreads){}
+ThreadPool::ThreadPool(const int &amountOfThreads) {}

@@ -118,7 +118,7 @@ errorCode_t AllTasks::computePOWER(int &retResult)
     if (NO_ERR == retError) //Exponentiation by squaring algorithm
     {
         retResult = 1;
-        for (;;)
+        while (true)
         {
             if (parameters[1] & 1)
             {
@@ -253,21 +253,21 @@ errorCode_t AllTasks::computeNTH_PRIME_NUMBER(int &retResult)
     }
     if (NO_ERR == retError)
     {
-        int count = 1;
+        int count = 1; //temp value to count which prime number we are at
         {
-            if (parameters[0] == 1)
+            if (1 == parameters[0])
             {
                 retResult = 2;
             }
             else
             {
-                for (int i = 1; i < std::numeric_limits<int>::max(); i = i + 2)
+                for (int i = 1; i < std::numeric_limits<int>::max(); i = i + 2) //loop till max integer is system is reached
                 {
-                    if (true == isPrime(i))
+                    if (true == isPrimeNumber(i))
                     {
                         ++count;
                     }
-                    if (count == parameters[0])
+                    if (count == parameters[0]) //if nth prime number is reached return result and break loop
                     {
                         retResult = i;
                         break;
@@ -298,7 +298,7 @@ errorCode_t AllTasks::computeHIGHEST_PRIME_NUMBER_LT_PARAM(int &retResult)
             int tempResult = 0;
             for (int i = 3; i < parameters[0]; i = i + 2)
             {
-                if (true == isPrime(i))
+                if (true == isPrimeNumber(i))
                 {
                     tempResult = i;
                 }
@@ -325,14 +325,16 @@ errorCode_t AllTasks::computeCOUNT_BINARY_ONES(int &retResult)
 {
     errorCode_t retError = NO_ERR;
     checkParam(paramCount, 1, retError);
-    if (parameters[0] < 0 && (NO_ERR == retError))
+    if (NO_ERR == retError)
     {
-        retError = INVALID_PARAM;
+        if (parameters[0] < 0)
+        {
+            retError = INVALID_PARAM;
+        }
     }
     if (NO_ERR == retError)
     {
         int count = 0;
-        parameters[0];
         for (unsigned int i = 0; i < sizeof(int) * 8; ++i)
         {
             if ((parameters[0] >> i) & 1)
@@ -347,6 +349,7 @@ errorCode_t AllTasks::computeCOUNT_BINARY_ONES(int &retResult)
 
 errorCode_t AllTasks::computeCHECKSUM(int &retResult)
 {
+    int mask = 0x555555;
     errorCode_t retError = NO_ERR;
     checkParam(paramCount, 1, retError);
     if (parameters[0] < 0 && (NO_ERR == retError))
@@ -355,12 +358,12 @@ errorCode_t AllTasks::computeCHECKSUM(int &retResult)
     }
     if (NO_ERR == retError)
     {
-        //todo
+        retResult = parameters[0] ^ mask;
     }
     return retError;
 }
 
-bool AllTasks::isPrime(int &val)
+bool AllTasks::isPrimeNumber(int &val)
 {
     int count = 0;
     for (int i = 1; i <= val; ++i)
