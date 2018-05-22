@@ -39,15 +39,15 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
         AllTasks newTask(allDataNeededToRunTask[i]);
         if (NO_ERR == newTask.executeTask(result))
         {
-            cout << tasks[i] << " ==> " << result << " ==> ";
+            cout << tasks[i] << " ==> " << result;
         }
         else
         {
-            cout << "Error at line " << i + 1 << " in txt file with input data. ->";
+            cout << "Error at line " << i + 1 << " in txt file with input data";
         }
         QueryPerformanceCounter(&end_fun);
         interval = static_cast<double>(end_fun.QuadPart - start_fun.QuadPart) / (frequency.QuadPart / 1000.0); // in ms
-        cout << interval << endl;
+        cout << " ==> " << interval << endl;
     }
 
     QueryPerformanceCounter(&end);
