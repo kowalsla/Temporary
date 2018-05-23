@@ -2,15 +2,22 @@
 #define MAINAPP_H
 
 #include "Common.h"
+#include "FileManager.h"
+#include "AllTasks.h"
 
-class MainApp       //TODO
+class MainApp
 {
 private:
   DISABLE_DEFAULT_CONSTUCTORS(MainApp);
+  FileManager fmObject;
+  int additionalThreads;
+  std::vector<std::string> taskStringVector;
+  std::vector<singleTask> allDataNeededToRunTask;
 
 public:
+  explicit MainApp(const std::string &inputFileName);
+
   ~MainApp();
 };
-
 
 #endif //MAINAPP_H

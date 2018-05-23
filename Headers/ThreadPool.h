@@ -3,12 +3,13 @@
 
 #include "Common.h"
 
-class ThreadPool  //TODO
+class ThreadPool //TODO
 {
 public:
   explicit ThreadPool(const int &amountOfThreads);
 
 private:
+  DISABLE_DEFAULT_CONSTUCTORS(ThreadPool);
 };
 
 #endif //THREADPOOL_H

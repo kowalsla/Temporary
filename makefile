@@ -9,12 +9,10 @@ all: build
 
 rebuild: clean build
 
-build: Output TaskManager.o FileManager.o MainApp.o AllTasks.o
+build: Output FileManager.o MainApp.o AllTasks.o
 	$(CC) $(OBJ)/* -o ./Output/exec.exe 
 Output:
 	mkdir -p ./Output/Objects
-TaskManager.o: 
-	$(CC) $(CXXFLAGS) $(SRC)/TaskManager.cpp -o $(OBJ)/TaskManager.o
 
 FileManager.o:
 	$(CC) $(CXXFLAGS) $(SRC)/FileManager.cpp -o $(OBJ)/FileManager.o

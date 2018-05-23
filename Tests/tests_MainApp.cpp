@@ -2,7 +2,6 @@
 #include "../Headers/AllTasks.h"
 
 using namespace std;
-std::mutex mutexLock;
 
 void calculateSingleTask(singleTask &taskToCalculate)
 {
@@ -10,16 +9,16 @@ void calculateSingleTask(singleTask &taskToCalculate)
     QueryPerformanceFrequency(&frequency);
     QueryPerformanceCounter(&start_fun);
     AllTasks newTask(taskToCalculate);
-    if (NO_ERR == newTask.executeTask((taskToCalculate).result)) //execute every task line by line, save result to singleTask struct
+    if (NO_ERR == newTask.executeTask(taskToCalculate.result)) //execute every task line by line, save result to singleTask struct
     {
-        (taskToCalculate).errorFlag = 0;
+        taskToCalculate.errorFlag = true;
     }
     else
     {
-        (taskToCalculate).errorFlag = -1;
+        taskToCalculate.errorFlag = false;
     }
     QueryPerformanceCounter(&end_fun);
-    (taskToCalculate).timeMS = static_cast<double>(end_fun.QuadPart - start_fun.QuadPart) / (frequency.QuadPart / 1000.0); // in ms
+    taskToCalculate.timeMS = static_cast<double>(end_fun.QuadPart - start_fun.QuadPart) / (frequency.QuadPart / 1000.0); // in ms
 }
 
 void threadCalculateTasks(vector<singleTask> *vectorOfTasks, int maxSize, int begin, int end)
@@ -40,13 +39,13 @@ void threadCalculateTasks(vector<singleTask> *vectorOfTasks, int maxSize, int be
 
 int main(int argc, char *argv[]) // temporary functionality here, it should be moved to MainApp.cpp soon
 {
-    LARGE_INTEGER start, end; // flags -start and end of program
+    LARGE_INTEGER start, end;              // flags -start and end of program
+    QueryPerformanceCounter(&start);       //time measurment
+    LARGE_INTEGER frequency;               //time measurment
+    QueryPerformanceFrequency(&frequency); //time measurment
+    double interval;                       //time measurment
 
     string inputFileName;
-    QueryPerformanceCounter(&start);
-    LARGE_INTEGER frequency;
-    QueryPerformanceFrequency(&frequency);
-
     if (argc == 1)
     {
         cout << "Input file name: \n";
@@ -61,22 +60,21 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
         cout << "Too many arguments! Example: \"./exec.exe tasks.txt > out.txt\"" << endl;
         exit(1);
     }
+    //MainApp mainAppObject(inputFileName);
 
     FileManager fmObject(inputFileName);
+    fmObject.readFromFile();
     int additionalThreads;
     fmObject.readConfig(additionalThreads); // read config to get amount of threads
 
-    TaskManager tmObject(fmObject);
-    vector<string> taskStringVector = fmObject.getTasksVector(); // saves every line from file in string vector
-
-    double interval;
+    vector<string> taskStringVector = fmObject.getlinesVector(); // saves every line from file in string vector
 
     vector<singleTask> allDataNeededToRunTask; //this vector holds all the data needed by task
 
     for (unsigned int i = 0; i < taskStringVector.size(); ++i)
     {
-        tmObject.saveToStruct(taskStringVector[i]);                       //this parses string and saves data to singleTask struct
-        allDataNeededToRunTask.push_back(tmObject.getSingleTaskStruct()); //and this adds object of singleTask struct to vector
+        fmObject.saveToStruct(taskStringVector[i]);                       //this parses string and saves data to singleTask struct
+        allDataNeededToRunTask.push_back(fmObject.getSingleTaskStruct()); //and this adds object of singleTask struct to vector
     }
 
     int threadAmount = 1 + additionalThreads; // one thread + additional amount from config file
@@ -86,8 +84,17 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
     {
         threadAmount = tasksVecSize;
     }
-    cout << "size: " << tasksVecSize << "TR AMNT: " << threadAmount << endl; //debug print
-    int step = tasksVecSize / threadAmount;
+
+    int step;
+
+    if (tasksVecSize % threadAmount)
+    {
+        step = tasksVecSize / threadAmount;
+    }
+    else
+    {
+        step = tasksVecSize / threadAmount - 1;
+    }
 
     std::thread calculationThreads[threadAmount];
 
@@ -107,7 +114,15 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
 
     for (int i = 0; i < tasksVecSize; ++i)
     {
-        cout << "Line: " << i + 1 << " Result = " << allDataNeededToRunTask[i].result << endl;
+        if (allDataNeededToRunTask[i].errorFlag == false)
+        {
+            cout << "Error at line " << i + 1 << " in txt file"
+                 << " ==> " << allDataNeededToRunTask[i].timeMS << endl;
+        }
+        else
+        {
+            cout << taskStringVector[i] << " ==> " << allDataNeededToRunTask[i].result << " ==> " << allDataNeededToRunTask[i].timeMS << endl;
+        }
     }
 
     QueryPerformanceCounter(&end);

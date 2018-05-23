@@ -52,7 +52,7 @@ errorCode_t FileManager::readFromFile()
         wasFileOpenedFlag = true;
         while (getline(newFile, line))
         {
-            tasksVector.push_back(line);
+            linesVector.push_back(line);
         }
         newFile.close();
     }
@@ -60,7 +60,45 @@ errorCode_t FileManager::readFromFile()
     {
         retError = FILE_READ_ERR;
     }
+
     return retError;
+}
+
+errorCode_t FileManager::saveToStruct(const std::string &line)
+{
+    singleTaskStructObject.parameters.clear();
+    std::stringstream stream(line);
+    int iter = 0;
+    int n;
+    while (1)
+    {
+        stream >> n;
+        if (!stream)
+        {
+            break;
+        }
+        if (iter == 0) //if iter == 0 it means we are at start of a line, which should be operation ID
+        {
+            singleTaskStructObject.taskID = static_cast<operations_t>(n);
+        }
+        else
+        {
+            singleTaskStructObject.parameters.push_back(n);
+        }
+        ++iter;
+    }
+    singleTaskStructObject.paramCount = --iter;
+    return NO_ERR;
+}
+
+std::vector<std::string> FileManager::getlinesVector()
+{
+    return linesVector;
+}
+
+singleTask FileManager::getSingleTaskStruct()
+{
+    return singleTaskStructObject;
 }
 
 /*errorCode_t FileManager::saveToFile(const std::string &lineToSave)
@@ -82,7 +120,3 @@ errorCode_t FileManager::readFromFile()
     return retError;
 }
 */
-std::vector<std::string> FileManager::getTasksVector()
-{
-    return tasksVector;
-}

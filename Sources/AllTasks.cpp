@@ -179,10 +179,9 @@ errorCode_t AllTasks::computeFIBONACCI(int &retResult)
         {
             int val0 = 0;
             int val1 = 1;
-            int temp;
             for (int i = 1; i < parameters[0]; ++i)
             {
-                temp = val0;
+                int temp = val0;
                 val0 = val1;
                 val1 = temp + val1;
             }
@@ -212,7 +211,6 @@ errorCode_t AllTasks::computeGCD(int &retResult)
     if (NO_ERR == retError)
     {
         retResult = 0;
-        bool isDivisor;
         int minVal = parameters[0];
         for (int i = 0; i < paramCount; ++i)
         {
@@ -223,7 +221,7 @@ errorCode_t AllTasks::computeGCD(int &retResult)
         }
         for (int i = 1; i <= minVal; ++i)
         {
-            isDivisor = true;
+			bool isDivisor = true;
             for (int j = 0; j < paramCount; ++j)
             {
                 if (parameters[j] % i != 0)
@@ -254,7 +252,6 @@ errorCode_t AllTasks::computeNTH_PRIME_NUMBER(int &retResult)
     }
     if (NO_ERR == retError)
     {
-        int count = 1; //temp value to count which prime number we are at
         {
             if (1 == parameters[0])
             {
@@ -262,6 +259,7 @@ errorCode_t AllTasks::computeNTH_PRIME_NUMBER(int &retResult)
             }
             else
             {
+				int count = 1; //temp value to count which prime number we are at
                 for (int i = 1; i < std::numeric_limits<int>::max(); i = i + 2) //loop till max integer is system is reached
                 {
                     if (true == isPrimeNumber(i))
@@ -350,7 +348,6 @@ errorCode_t AllTasks::computeCOUNT_BINARY_ONES(int &retResult)
 
 errorCode_t AllTasks::computeCHECKSUM(int &retResult)
 {
-    int mask = 0x555555;
     errorCode_t retError = NO_ERR;
     checkParam(paramCount, 1, retError);
     if (parameters[0] < 0 && (NO_ERR == retError))
@@ -359,6 +356,7 @@ errorCode_t AllTasks::computeCHECKSUM(int &retResult)
     }
     if (NO_ERR == retError)
     {
+		int mask = 0x555555;
         retResult = parameters[0] ^ mask;
     }
     return retError;
