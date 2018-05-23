@@ -11,6 +11,7 @@
 #include <thread>    // multithreading
 #include <limits>    // used to get max value of given type
 #include <cstddef>   //works with <limits>
+#include <mutex>
 
 #define CONFIG_FILE_PATH "./Configuration/config.txt"
 

@@ -1,5 +1,5 @@
 ~~~~~Configuration~~~~~
 
 Additional threads:
-1
+4
 

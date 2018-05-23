@@ -70,6 +70,7 @@ void AllTasks::computeSUM(int &retResult)
         sum += parameters[i];
     }
     retResult = sum;
+    
 }
 
 void AllTasks::computeMULTIPLICATION(int &retResult)

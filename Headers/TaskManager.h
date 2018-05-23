@@ -3,11 +3,14 @@
 
 #include "FileManager.h"
 
-struct singleTask // struct containing everything that is needed by task
+struct singleTask // struct containing everything that is needed by task, and its result after computing
 {
   operations_t taskID;
   std::vector<int> parameters;
   int paramCount;
+  int result;
+  double timeMS;
+  bool errorFlag;
 };
 
 class TaskManager
