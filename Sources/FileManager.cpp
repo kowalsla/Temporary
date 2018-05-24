@@ -102,6 +102,11 @@ singleTask FileManager::getSingleTaskStruct()
     return singleTaskStructObject;
 }
 
+std::vector<singleTask> FileManager::getSingleTasksVector()
+{
+    return singleTasksVector;
+}
+
 /*errorCode_t FileManager::saveToFile(const std::string &lineToSave)
 {
     errorCode_t retError = NO_ERR;

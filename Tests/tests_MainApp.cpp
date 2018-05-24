@@ -1,5 +1,6 @@
-#include "../Headers/MainApp.h"
 #include "../Headers/AllTasks.h"
+#include "../Headers/ThreadPool.h"
+#include "../Headers/FileManager.h"
 
 using namespace std;
 
@@ -96,7 +97,7 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
 
     for (int i = 0; i < threadAmount; ++i)
     {
-        calculationThreads[i] = thread(threadCalculateTasks, &allDataNeededToRunTask, tasksVecSize, begVec, endVec);
+        calculationThreads[i] = thread(threadCalculateTasks, &allDataNeededToRunTask, tasksVecSize - 1, begVec, endVec);
         begVec = endVec + 1;
         endVec = begVec + step;
     }
