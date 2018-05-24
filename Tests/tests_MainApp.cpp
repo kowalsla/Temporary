@@ -1,6 +1,6 @@
-#include "../Headers/AllTasks.h"
-#include "../Headers/ThreadPool.h"
 #include "../Headers/FileManager.h"
+#include "../Headers/ThreadPool.h"
+#include "../Headers/AllTasks.h"
 
 using namespace std;
 
@@ -61,19 +61,25 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
         cout << "Too many arguments! Example: \"./exec.exe tasks.txt > out.txt\"" << endl;
         exit(1);
     }
-    //MainApp mainAppObject(inputFileName);
 
     FileManager fmObject(inputFileName);
-    fmObject.readFromFile();
-    int additionalThreads;
-    fmObject.readConfig(additionalThreads); // read config to get amount of threads
 
-    vector<string> taskStringVector = fmObject.getlinesVector(); // saves every line from file in string vector
+    if (NO_ERR != fmObject.readFromFile())
+    {
+        cout << "Cant open file! Abort." << endl;
+        exit(1);
+    }
 
-    vector<singleTask> allDataNeededToRunTask = fmObject.getSingleTasksVector(); //this vector holds all the data needed by task
+    //ThreadPool threadPoolObj(fmObject);
+
+    fmObject.readConfig(); // read config to get amount of threads
+    int additionalThreads = fmObject.getThreadAmount();
+
+    vector<string> linesVector = fmObject.getlinesVector();          // saves every line from file in string vector
+    vector<singleTask> tasksDataVec = fmObject.getTasksDataVector(); //this vector holds all the data needed by task
 
     int threadAmount = 1 + additionalThreads; // one thread + additional amount from config file
-    int tasksVecSize = allDataNeededToRunTask.size();
+    int tasksVecSize = tasksDataVec.size();
 
     while (threadAmount > tasksVecSize)
     {
@@ -97,7 +103,9 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
 
     for (int i = 0; i < threadAmount; ++i)
     {
-        calculationThreads[i] = thread(threadCalculateTasks, &allDataNeededToRunTask, tasksVecSize - 1, begVec, endVec);
+
+        calculationThreads[i] = thread(threadCalculateTasks, &tasksDataVec, tasksVecSize - 1, begVec, endVec);
+
         begVec = endVec + 1;
         endVec = begVec + step;
     }
@@ -109,14 +117,14 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
 
     for (int i = 0; i < tasksVecSize; ++i)
     {
-        if (allDataNeededToRunTask[i].errorFlag == false)
+        if (tasksDataVec[i].errorFlag == false)
         {
             cout << "Error at line " << i + 1 << " in txt file"
-                 << " ==> " << allDataNeededToRunTask[i].timeMS << endl;
+                 << " ==> " << tasksDataVec[i].timeMS << endl;
         }
         else
         {
-            cout << taskStringVector[i] << " ==> " << allDataNeededToRunTask[i].result << " ==> " << allDataNeededToRunTask[i].timeMS << endl;
+            cout << linesVector[i] << " ==> " << tasksDataVec[i].result << " ==> " << tasksDataVec[i].timeMS << endl;
         }
     }
 

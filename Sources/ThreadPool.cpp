@@ -1,3 +1,5 @@
 #include "../Headers/ThreadPool.h"
 
-ThreadPool::ThreadPool(const int &amountOfThreads) {}
+ThreadPool::ThreadPool(const FileManager &newFmObject) : fmObject(newFmObject)
+{
+}

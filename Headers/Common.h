@@ -17,7 +17,6 @@
 
 #define DISABLE_DEFAULT_CONSTUCTORS(className)        \
     className() = delete;                             \
-    className(const className &) = delete;            \
     className &operator=(const className &) = delete; \
     className(className &&) = delete;                 \
     className &operator=(className &&) = delete

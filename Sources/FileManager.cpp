@@ -1,11 +1,11 @@
 #include "../Headers/FileManager.h"
 FileManager::~FileManager() {}
 
-FileManager::FileManager(const std::string &inputFilePath) : inputFile(inputFilePath), configFile(CONFIG_FILE_PATH)
+FileManager::FileManager(const std::string &inputFilePath) : threadAmount(0), inputFile(inputFilePath), configFile(CONFIG_FILE_PATH)
 {
 }
 
-errorCode_t FileManager::readConfig(int &retThreadAmount)
+errorCode_t FileManager::readConfig()
 {
     errorCode_t retError = NO_ERR;
     bool wasFileOpenedFlag = false; //flag used to check if file opened correctly
@@ -36,7 +36,7 @@ errorCode_t FileManager::readConfig(int &retThreadAmount)
     }
     else
     {
-        retThreadAmount = temp;
+        threadAmount = temp;
     }
     return retError;
 }
@@ -89,7 +89,7 @@ void FileManager::saveToStruct(const std::string &line)
         ++iter;
     }
     singleTaskStructObject.paramCount = --iter;
-    this->singleTasksVector.push_back(singleTaskStructObject);
+    this->tasksDataVector.push_back(singleTaskStructObject);
 }
 
 std::vector<std::string> FileManager::getlinesVector()
@@ -102,27 +102,19 @@ singleTask FileManager::getSingleTaskStruct()
     return singleTaskStructObject;
 }
 
-std::vector<singleTask> FileManager::getSingleTasksVector()
+std::vector<singleTask> FileManager::getTasksDataVector()
 {
-    return singleTasksVector;
+    return tasksDataVector;
 }
 
-/*errorCode_t FileManager::saveToFile(const std::string &lineToSave)
+FileManager::FileManager(const FileManager &orig)
 {
-    errorCode_t retError = NO_ERR;
-    bool wasFileOpenedFlag = false;
-    std::ofstream newFile;
-    newFile.open(outputFile, std::ios_base::app);
-    if (newFile.is_open())
-    {
-        wasFileOpenedFlag = true;
-        newFile << lineToSave << "\n";
-    }
-    newFile.close();
-    if (false == wasFileOpenedFlag)
-    {
-        retError = FILE_SAVE_ERR;
-    }
-    return retError;
+    threadAmount = orig.threadAmount;
+    linesVector = orig.linesVector;
+    tasksDataVector = orig.tasksDataVector;
 }
-*/
+
+int FileManager::getThreadAmount()
+{
+    return threadAmount;
+}
