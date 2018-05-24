@@ -16,8 +16,8 @@ private:
 
 public:
   explicit MainApp(const std::string &inputFileName);
-
-  ~MainApp();
+  void init();
+  ~MainApp() {}
 };
 
 #endif //MAINAPP_H

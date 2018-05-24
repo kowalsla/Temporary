@@ -53,6 +53,7 @@ errorCode_t FileManager::readFromFile()
         while (getline(newFile, line))
         {
             linesVector.push_back(line);
+            this->saveToStruct(line);
         }
         newFile.close();
     }
@@ -64,7 +65,7 @@ errorCode_t FileManager::readFromFile()
     return retError;
 }
 
-errorCode_t FileManager::saveToStruct(const std::string &line)
+void FileManager::saveToStruct(const std::string &line)
 {
     singleTaskStructObject.parameters.clear();
     std::stringstream stream(line);
@@ -88,7 +89,7 @@ errorCode_t FileManager::saveToStruct(const std::string &line)
         ++iter;
     }
     singleTaskStructObject.paramCount = --iter;
-    return NO_ERR;
+    singleTasksVector.push_back(singleTaskStructObject);
 }
 
 std::vector<std::string> FileManager::getlinesVector()
@@ -96,9 +97,9 @@ std::vector<std::string> FileManager::getlinesVector()
     return linesVector;
 }
 
-singleTask FileManager::getSingleTaskStruct()
+std::vector<singleTask> FileManager::getSingleTasksVector()
 {
-    return singleTaskStructObject;
+    return singleTasksVector;
 }
 
 /*errorCode_t FileManager::saveToFile(const std::string &lineToSave)

@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
         cout << "Too many arguments! Example: \"./exec.exe tasks.txt > out.txt\"" << endl;
         exit(1);
     }
-    //MainApp mainAppObject(inputFileName);
+    MainApp mainAppObject(inputFileName);
 
     FileManager fmObject(inputFileName);
     fmObject.readFromFile();
@@ -69,13 +69,7 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
 
     vector<string> taskStringVector = fmObject.getlinesVector(); // saves every line from file in string vector
 
-    vector<singleTask> allDataNeededToRunTask; //this vector holds all the data needed by task
-
-    for (unsigned int i = 0; i < taskStringVector.size(); ++i)
-    {
-        fmObject.saveToStruct(taskStringVector[i]);                       //this parses string and saves data to singleTask struct
-        allDataNeededToRunTask.push_back(fmObject.getSingleTaskStruct()); //and this adds object of singleTask struct to vector
-    }
+    vector<singleTask> allDataNeededToRunTask = fmObject.getSingleTasksVector(); //this vector holds all the data needed by task
 
     int threadAmount = 1 + additionalThreads; // one thread + additional amount from config file
     int tasksVecSize = allDataNeededToRunTask.size();

@@ -20,11 +20,11 @@ public:
   std::vector<std::string> getlinesVector();
   std::vector<singleTask> getSingleTasksVector();
   errorCode_t readFromFile();
-  //errorCode_t saveToFile(const std::string &lineToSave);
   errorCode_t readConfig(int &retThreadAmount);
-  singleTask getSingleTaskStruct();
-  errorCode_t saveToStruct(const std::string &line);
+  void saveToStruct(const std::string &line);
   ~FileManager();
+
+  //errorCode_t saveToFile(const std::string &lineToSave);
 
 private:
   DISABLE_DEFAULT_CONSTUCTORS(FileManager);
@@ -33,6 +33,7 @@ private:
   std::string configFile;
   singleTask singleTaskStructObject;    // singleTask struct obj
   std::vector<std::string> linesVector; // this vector is used to store lines from filetasks
+  std::vector<singleTask> singleTasksVector;
 };
 
 #endif //FILEMANAGER_H
