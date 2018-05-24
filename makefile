@@ -9,7 +9,7 @@ all: build
 
 rebuild: clean build
 
-build: Output FileManager.o MainApp.o AllTasks.o
+build: Output FileManager.o MainApp.o AllTasks.o testMain.o
 	$(CC) $(OBJ)/* -o ./Output/exec.exe 
 Output:
 	mkdir -p ./Output/Objects
@@ -17,11 +17,14 @@ Output:
 FileManager.o:
 	$(CC) $(CXXFLAGS) $(SRC)/FileManager.cpp -o $(OBJ)/FileManager.o
 
-MainApp.o:
-	$(CC) $(CXXFLAGS) $(TESTS)/tests_MainApp.cpp -o $(OBJ)/MainApp.o
+testMain.o:
+	$(CC) $(CXXFLAGS) $(TESTS)/tests_MainApp.cpp -o $(OBJ)/testMain.o
 
 AllTasks.o:
 	$(CC) $(CXXFLAGS) $(SRC)/AllTasks.cpp -o $(OBJ)/AllTasks.o
+
+MainApp.o:
+	$(CC) $(CXXFLAGS) $(SRC)/MainApp.cpp -o $(OBJ)/MainApp.o
 
 clean:
 	rm -p *.o
