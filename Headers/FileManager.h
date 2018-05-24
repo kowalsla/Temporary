@@ -3,16 +3,6 @@
 
 #include "Common.h"
 
-struct singleTask // struct containing everything that is needed by task, and its result after computing
-{
-  operations_t taskID;
-  std::vector<int> parameters;
-  int paramCount;
-  int result;
-  double timeMS;
-  bool errorFlag;
-};
-
 class FileManager
 {
 public:
@@ -20,19 +10,20 @@ public:
   std::vector<std::string> getlinesVector();
   std::vector<singleTask> getSingleTasksVector();
   errorCode_t readFromFile();
-  //errorCode_t saveToFile(const std::string &lineToSave);
+
   errorCode_t readConfig(int &retThreadAmount);
   singleTask getSingleTaskStruct();
-  errorCode_t saveToStruct(const std::string &line);
-  ~FileManager();
 
+  ~FileManager();
+  //errorCode_t saveToFile(const std::string &lineToSave);
 private:
   DISABLE_DEFAULT_CONSTUCTORS(FileManager);
-
+  void saveToStruct(const std::string &line);
   std::string inputFile;
   std::string configFile;
   singleTask singleTaskStructObject;    // singleTask struct obj
   std::vector<std::string> linesVector; // this vector is used to store lines from filetasks
+  std::vector<singleTask> singleTasksVector;
 };
 
 #endif //FILEMANAGER_H

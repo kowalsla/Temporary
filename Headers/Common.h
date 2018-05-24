@@ -50,4 +50,14 @@ enum errorCode_t
     CONFIG_FILE_READ_ERR //error while opening config file
 };
 
+struct singleTask // struct containing everything that is needed by task, and its result after computing
+{
+    operations_t taskID;
+    std::vector<int> parameters;
+    int paramCount;
+    int result;
+    double timeMS;
+    bool errorFlag;
+};
+
 #endif //COMMON_H

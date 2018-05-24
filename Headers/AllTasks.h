@@ -1,7 +1,7 @@
 #ifndef ALLTASKS_H
 #define ALLTASKS_H
 
-#include "FileManager.h"
+#include "Common.h"
 
 class AllTasks
 {
