@@ -107,11 +107,8 @@ std::vector<singleTask> FileManager::getTasksDataVector()
     return tasksDataVector;
 }
 
-FileManager::FileManager(const FileManager &orig)
+FileManager::FileManager(const FileManager &orig) : threadAmount(orig.threadAmount), linesVector(orig.linesVector), tasksDataVector(orig.tasksDataVector)
 {
-    threadAmount = orig.threadAmount;
-    linesVector = orig.linesVector;
-    tasksDataVector = orig.tasksDataVector;
 }
 
 int FileManager::getThreadAmount()

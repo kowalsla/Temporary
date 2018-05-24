@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
         exit(1);
     }
 
-    //ThreadPool threadPoolObj(fmObject);
+    ThreadPool threadPoolObj(fmObject);
 
     fmObject.readConfig(); // read config to get amount of threads
     int additionalThreads = fmObject.getThreadAmount();
