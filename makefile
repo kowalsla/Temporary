@@ -10,8 +10,8 @@ all: build
 rebuild: clean build
 
 
-build: Output FileManager.o AllTasks.o testMain.o ThreadPool.o
-	$(CC) $(OBJ)/* -o ./Output/exec.exe 
+build: Output FileManager.o AllTasks.o testMain.o ThreadManager.o
+	$(CC) $(OBJ)/* -o ./exec.exe 
 Output:
 	mkdir -p ./Output/Objects
 
@@ -24,9 +24,9 @@ testMain.o:
 AllTasks.o:
 	$(CC) $(CXXFLAGS) $(SRC)/AllTasks.cpp -o $(OBJ)/AllTasks.o
 
-ThreadPool.o:
-	$(CC) $(CXXFLAGS) $(SRC)/ThreadPool.cpp -o $(OBJ)/ThreadPool.o
-	
+ThreadManager.o:
+	$(CC) $(CXXFLAGS) $(SRC)/ThreadManager.cpp -o $(OBJ)/ThreadManager.o
+
 clean:
 	rm -p *.o
 	rm -r ./Output

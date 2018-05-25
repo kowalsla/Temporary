@@ -1,44 +1,8 @@
-#include "../Headers/FileManager.h"
-#include "../Headers/ThreadPool.h"
-#include "../Headers/AllTasks.h"
+#include "../Headers/ThreadManager.h"
 
 using namespace std;
 
-void calculateSingleTask(singleTask &taskToCalculate)
-{
-    LARGE_INTEGER start_fun, end_fun, frequency; // flags - start and end of function
-    QueryPerformanceFrequency(&frequency);
-    QueryPerformanceCounter(&start_fun);
-    AllTasks newTask(taskToCalculate);
-    if (NO_ERR == newTask.executeTask(taskToCalculate.result)) //execute every task line by line, save result to singleTask struct
-    {
-        taskToCalculate.errorFlag = true;
-    }
-    else
-    {
-        taskToCalculate.errorFlag = false;
-    }
-    QueryPerformanceCounter(&end_fun);
-    taskToCalculate.timeMS = static_cast<double>(end_fun.QuadPart - start_fun.QuadPart) / (frequency.QuadPart / 1000.0); // in ms
-}
-
-void threadCalculateTasks(vector<singleTask> *vectorOfTasks, int maxSize, int begin, int end)
-{
-    if (begin > maxSize)
-    {
-        begin = maxSize;
-    }
-    if (end > maxSize)
-    {
-        end = maxSize;
-    }
-    for (int i = begin; i <= end; ++i)
-    {
-        calculateSingleTask((*vectorOfTasks)[i]);
-    }
-}
-
-int main(int argc, char *argv[]) // temporary functionality here, it should be moved to MainApp.cpp soon
+int main(int argc, char *argv[])
 {
     LARGE_INTEGER start, end;              // flags -start and end of program
     QueryPerformanceCounter(&start);       //time measurment
@@ -70,61 +34,30 @@ int main(int argc, char *argv[]) // temporary functionality here, it should be m
         exit(1);
     }
 
-    ThreadPool threadPoolObj(fmObject);
-
     fmObject.readConfig(); // read config to get amount of threads
-    int additionalThreads = fmObject.getThreadAmount();
 
-    vector<string> linesVector = fmObject.getlinesVector();          // saves every line from file in string vector
-    vector<singleTask> tasksDataVec = fmObject.getTasksDataVector(); //this vector holds all the data needed by task
+    //start new threads (minimum 1 will start + additional from config.txt)
 
-    int threadAmount = 1 + additionalThreads; // one thread + additional amount from config file
-    int tasksVecSize = tasksDataVec.size();
+    ThreadManager threadMgrObj(fmObject); //create thread
+    threadMgrObj.init();                  //initialize data
+    threadMgrObj.startThreads();          //start threads which take care of calculating tasks
+    threadMgrObj.joinThreads();           //join threads
 
-    while (threadAmount > tasksVecSize)
-    {
-        threadAmount = tasksVecSize;
-    }
+    /*print results*/
 
-    int step;
-
-    if (tasksVecSize % threadAmount)
-    {
-        step = tasksVecSize / threadAmount;
-    }
-    else
-    {
-        step = tasksVecSize / threadAmount - 1;
-    }
-
-    std::thread calculationThreads[threadAmount];
-
-    int begVec = 0, endVec = step;
-
-    for (int i = 0; i < threadAmount; ++i)
-    {
-
-        calculationThreads[i] = thread(threadCalculateTasks, &tasksDataVec, tasksVecSize - 1, begVec, endVec);
-
-        begVec = endVec + 1;
-        endVec = begVec + step;
-    }
-
-    for (int i = 0; i < threadAmount; ++i)
-    {
-        calculationThreads[i].join();
-    }
+    int tasksVecSize = fmObject.getTasksDataVector().size();
+    vector<singleTask> calculatedTasks = threadMgrObj.getCalculatedTasks();
 
     for (int i = 0; i < tasksVecSize; ++i)
     {
-        if (tasksDataVec[i].errorFlag == false)
+        if (calculatedTasks[i].errorFlag == false)
         {
             cout << "Error at line " << i + 1 << " in txt file"
-                 << " ==> " << tasksDataVec[i].timeMS << endl;
+                 << " ==> " << calculatedTasks[i].timeMS << endl;
         }
         else
         {
-            cout << linesVector[i] << " ==> " << tasksDataVec[i].result << " ==> " << tasksDataVec[i].timeMS << endl;
+            cout << fmObject.getlinesVector()[i] << " ==> " << calculatedTasks[i].result << " ==> " << calculatedTasks[i].timeMS << endl;
         }
     }
 

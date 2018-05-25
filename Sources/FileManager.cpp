@@ -1,7 +1,7 @@
 #include "../Headers/FileManager.h"
 FileManager::~FileManager() {}
 
-FileManager::FileManager(const std::string &inputFilePath) : threadAmount(0), inputFile(inputFilePath), configFile(CONFIG_FILE_PATH)
+FileManager::FileManager(const std::string &inputFilePath) : additionalThreads(0), inputFile(inputFilePath), configFile(CONFIG_FILE_PATH)
 {
 }
 
@@ -11,7 +11,7 @@ errorCode_t FileManager::readConfig()
     bool wasFileOpenedFlag = false; //flag used to check if file opened correctly
     std::string line;
     std::ifstream newFile(configFile);
-    int temp; //temporary value to store amount of threads extracted from file
+    int temp = 0; //temporary value to store amount of threads extracted from file
     if (newFile.is_open())
     {
         wasFileOpenedFlag = true;
@@ -36,7 +36,14 @@ errorCode_t FileManager::readConfig()
     }
     else
     {
-        threadAmount = temp;
+        if (isalpha(temp))
+        {
+            additionalThreads = temp;
+        }
+        else
+        {
+            additionalThreads = 0;
+        }
     }
     return retError;
 }
@@ -107,11 +114,11 @@ std::vector<singleTask> FileManager::getTasksDataVector()
     return tasksDataVector;
 }
 
-FileManager::FileManager(const FileManager &orig) : threadAmount(orig.threadAmount), linesVector(orig.linesVector), tasksDataVector(orig.tasksDataVector)
+FileManager::FileManager(const FileManager &orig) : additionalThreads(orig.additionalThreads), linesVector(orig.linesVector), tasksDataVector(orig.tasksDataVector)
 {
 }
 
 int FileManager::getThreadAmount()
 {
-    return threadAmount;
+    return additionalThreads;
 }

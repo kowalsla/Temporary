@@ -22,7 +22,7 @@ public:
 private:
   DISABLE_DEFAULT_CONSTUCTORS(FileManager);
 
-  int threadAmount;
+  int additionalThreads;
   std::string inputFile;
   std::string configFile;
   singleTask singleTaskStructObject;    // singleTask struct obj

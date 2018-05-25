@@ -12,6 +12,7 @@
 #include <limits>    // used to get max value of given type
 #include <cstddef>   //works with <limits>
 #include <mutex>
+#include <ctype.h>
 
 #define CONFIG_FILE_PATH "./Configuration/config.txt"
 
